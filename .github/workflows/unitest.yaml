@@ -8,15 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Check out code into the repo  directory
+      uses: actions/checkout@v2
     - name: Install bazel
-      working-directory: ./
       run: |
-        
         wget  https://github.com/bazelbuild/bazel/releases/download/6.1.1/bazel-6.1.1-installer-linux-x86_64.sh
         sudo bash bazel-6.1.1-installer-linux-x86_64.sh
         which bazel
     - name: Run bazel build
-      working-directory: ./
       run: |
         ls
         bazel build //examples/cpp/helloworld:greeter_client
