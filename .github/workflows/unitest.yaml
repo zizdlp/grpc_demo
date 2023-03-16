@@ -14,5 +14,5 @@ jobs:
         sudo bash bazel-6.1.1-installer-linux-x86_64.sh
         which bazel
     - name: Run bazel build
-      working-directory: .
+      working-directory: ./
       run: bazel build //examples/cpp/helloworld:greeter_client
