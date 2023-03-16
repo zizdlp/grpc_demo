@@ -1,18 +1,25 @@
-name: test
+name: Run unit tests
 
-on:
-  push:
-    branches:
-      - 'dev'
+on: push
+  branches:
+    - 'main'
 jobs:
+
   test:
     name: Test
     runs-on: ubuntu-latest
 
     steps:
-    
-    - name: Install bazel
-    run: |
-      curl -L https://github.com/bazelbuild/bazel/releases/download/6.1.1/bazel-6.1.1-installer-linux-x86_64.sh
-      sudo bash bazel-6.1.1-installer-linux-x86_64.sh
-      which bazel
+
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.19
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Run migrations
+      working-directory: .
+      run: `bazel build //examples/cpp/helloworld:greeter_client`
