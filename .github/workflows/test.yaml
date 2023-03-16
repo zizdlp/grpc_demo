@@ -2,13 +2,27 @@ name: Run unit tests
 
 on: push
   branches:
-    - 'dev'
+    - 'main'
 jobs:
 
   test:
     name: Test
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: zizdlp/postgres_pgjieba:latest
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: ziwiki
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
 
     - name: Set up Go 1.x
@@ -20,6 +34,15 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
+    - name: Install golang-migrate
+      run: |
+        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz
+        sudo mv migrate.linux-amd64 /usr/bin/migrate
+        which migrate
     - name: Run migrations
-      working-directory: .
-      run: `bazel build //examples/cpp/helloworld:greeter_client`
+      working-directory: ./backend
+      run: make migrateup
+
+    - name: Test
+      working-directory: ./backend
+      run: make  test
