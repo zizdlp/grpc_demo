@@ -3,49 +3,13 @@ name: ci
 on:
   push:
 jobs:
-  docker:
+  test:
+    name: Test
     runs-on: ubuntu-latest
+
     steps:
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      # -
-      #   name: Build and push nextapp
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: "{{defaultContext}}:nextapp"
-      #     file: prod.Dockerfile
-      #     build-args: |
-      #       NEXT_PUBLIC_HOME_URL=https://www.zizdlp.com/backend/
-      #       NEXT_PUBLIC_BACKEND_URL=https://www.zizdlp.com/backend/
-      #       NEXT_PUBLIC_SERVER_URL=https://www.zizdlp.com/backend/
-      #       NEXT_PUBLIC_USE_HTTPS=true
-      #       NEXT_PUBLIC_GEO_KEY=340460ae63bf44edbe9210420a14534e
-      #       NEXTAUTH_URL=https://www.zizdlp.com/
-      #     push: true
-      #     tags: zizdlp/ziwiki_nextapp:latest
-      # -
-      #   name: Build and push deps
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: "{{defaultContext}}:build"
-      #     file: deps.Dockerfile
-      #     push: true
-      #     tags: zizdlp/ziwiki_deps:latest
-      -
-        name: Build and push api
-        uses: docker/build-push-action@v4
-        with:
-          context: "{{defaultContext}}"
-          file: "./build/api.Dockerfile"
-          push: true
-          tags: zizdlp/ziwiki_api:latest
+    - name: Install golang-migrate
+      run: |
+        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz
+        sudo mv migrate.linux-amd64 /usr/bin/migrate
+        which migrate
