@@ -1,0 +1,21 @@
+name: ci
+
+on: 
+  push
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code into the repo  directory
+      uses: actions/checkout@v2
+    - name: Install bazel
+      run: |
+        wget  https://github.com/bazelbuild/bazel/releases/download/6.1.1/bazel-6.1.1-installer-linux-x86_64.sh
+        sudo bash bazel-6.1.1-installer-linux-x86_64.sh
+        which bazel
+    - name: Run bazel build
+      run:
+        bazel build //examples/cpp/helloworld:all
