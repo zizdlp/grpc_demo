@@ -147,7 +147,7 @@ int main(int argc, char** argv) {
   
   //while(true){
   for(auto index=0;index<300;++index){
-    if(index%10==0){
+    if(index%1==0){
       std::cout<<"index:"<<index<<std::endl;
       channelState(channel);
     }
@@ -162,6 +162,7 @@ int main(int argc, char** argv) {
   pool.wait_for_tasks();
   }
   channelState(channel);//get channel state;
+  // Create a Shutdown request
   channel.reset();//close channel;
   return 0;
 }
