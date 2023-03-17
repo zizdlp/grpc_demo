@@ -21,16 +21,6 @@ licenses(["notice"])
 
 package(default_visibility = ["//visibility:public"])
 
-grpc_proto_library(
-    name = "auth_sample",
-    srcs = ["auth_sample.proto"],
-)
-
-grpc_proto_library(
-    name = "hellostreamingworld",
-    srcs = ["hellostreamingworld.proto"],
-)
-
 # The following three rules demonstrate the usage of the cc_grpc_library rule in
 # in a mode compatible with the native proto_library and cc_proto_library rules.
 proto_library(
@@ -50,33 +40,19 @@ cc_grpc_library(
     deps = [":helloworld_cc_proto"],
 )
 
-grpc_proto_library(
-    name = "route_guide",
-    srcs = ["route_guide.proto"],
-)
-
+## data_stream proto
 proto_library(
-    name = "keyvaluestore_proto",
-    srcs = ["keyvaluestore.proto"],
+    name = "data_proto",
+    srcs = ["data.proto"],
+)
+cc_proto_library(
+    name = "data_cc_proto",
+    deps = [":data_proto"],
 )
 
-grpc_proto_library(
-    name = "keyvaluestore",
-    srcs = ["keyvaluestore.proto"],
-)
-
-py_proto_library(
-    name = "helloworld_py_pb2",
-    deps = [":helloworld_proto"],
-)
-
-py_grpc_library(
-    name = "helloworld_py_pb2_grpc",
-    srcs = [":helloworld_proto"],
-    deps = [":helloworld_py_pb2"],
-)
-
-proto_library(
-    name = "route_guide_proto",
-    srcs = [":route_guide.proto"],
+cc_grpc_library(
+    name = "data_cc_grpc",
+    srcs = [":data_proto"],
+    grpc_only = True,
+    deps = [":data_cc_proto"],
 )
