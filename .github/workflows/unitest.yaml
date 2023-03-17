@@ -1,8 +1,9 @@
 name: ci
 
-on: 
-  push
-
+on:
+  push:
+    branches:
+      - 'main'
 jobs:
   test:
     name: Test
@@ -19,3 +20,4 @@ jobs:
     - name: Run bazel build
       run:
         bazel build //examples/cpp/helloworld:all
+        bazel build //examples/cpp/streaming:all

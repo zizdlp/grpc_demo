@@ -56,7 +56,7 @@ class GRPCDemoClient {
         id++;
       }
       stream->WritesDone();
-      //std::cout << "===streaming client send:"<<(double)length/1024/1024<<" MB" << std::endl;
+      std::cout << "===streaming client send:"<<(double)length/1024/1024<<" MB" << std::endl;
     });
 
     Response server_reply;
@@ -65,7 +65,7 @@ class GRPCDemoClient {
       recv_length+=server_reply.data().length();
     }
     writer.join();
-    //std::cout << "===streaming client recv::"<<recv_length/1024/1024<<" MB" << std::endl;
+    std::cout << "===streaming client recv::"<<recv_length/1024/1024<<" MB" << std::endl;
     Status status = stream->Finish();
     if (!status.ok()) {
       std::cout << "stream rpc failed." << std::endl;
@@ -94,6 +94,21 @@ class GRPCDemoClient {
  private:
   std::unique_ptr<GRPCDemo::Stub> stub_;
 };
+void channelState(std::shared_ptr<grpc::Channel> channel){
+  auto channel_state = channel->GetState(true);
+  if (channel_state == GRPC_CHANNEL_IDLE){
+    std::cout<<"Channel is idle"<<std::endl;
+  }else if (channel_state == GRPC_CHANNEL_CONNECTING){
+    std::cout<<"Channel is connecting"<<std::endl;
+  }else if (channel_state == GRPC_CHANNEL_READY){
+    std::cout<<"Channel is ready"<<std::endl;
+  }else if (channel_state == GRPC_CHANNEL_SHUTDOWN){
+    std::cout<<"CChannel is shutdown"<<std::endl;
+  }else{
+    std::cout<<"Channel unknown state"<<std::endl;
+  }
+}
+
 int main(int argc, char** argv) {
   // Instantiate the client. It requires a channel, out of which the actual RPCs
   // are created. This channel models a connection to an endpoint specified by
@@ -127,8 +142,14 @@ int main(int argc, char** argv) {
   ch_args.SetMaxSendMessageSize(-1);
   auto  channel = grpc::CreateCustomChannel(target_str, grpc::InsecureChannelCredentials(), ch_args);
   GRPCDemoClient GRPCDemo(channel);
+  channelState(channel);
+  
   //while(true){
   for(auto index=0;index<300;++index){
+    if(index%1==0){
+      std::cout<<"index:"<<index<<std::endl;
+      channelState(channel);
+    }
     for (int i=0;i<20;++i){
         pool.push_task([target_str,&GRPCDemo]{
           int length=100*1024*1024;//100MB
@@ -139,5 +160,8 @@ int main(int argc, char** argv) {
   }
   pool.wait_for_tasks();
   }
+  channelState(channel);//get channel state;
+  // Create a Shutdown request
+  channel.reset();//close channel;
   return 0;
 }

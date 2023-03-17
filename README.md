@@ -4,9 +4,12 @@
 
 ## 测试
 
-`bazel build examples/cpp/helloworld:all`
-
-
+1. hello wolrd case
+    `bazel build examples/cpp/helloworld:all`
+2. streaming large data case (grpc memory usage continues to increase)
+    `bazel build examples/cpp/streaming:all`
+3. streaming large data case but Scheduled restart server
+    `bazel build examples/cpp/restart_server:all`
 ## 注意事项
 
 1. workspace 添加依赖
