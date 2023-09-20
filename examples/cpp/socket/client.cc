@@ -9,10 +9,39 @@
 #include "absl/flags/parse.h"
 #include "absl/strings/str_format.h"
 
+#include <arpa/inet.h>
+#include <netdb.h>
+
 ABSL_FLAG(std::string, ip, "127.0.0.1", "Server address");
 ABSL_FLAG(uint16_t, port, 50051, "Server port for the service");
 
+
+
+std::string convert2IP(std::string ip){
+
+    const char* hostname = ip.c_str();
+    struct addrinfo hints, *res;
+
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_INET; // 使用IPv4
+
+    int status = getaddrinfo(hostname, NULL, &hints, &res);
+    if (status != 0) {
+        std::cerr << "getaddrinfo error: " << gai_strerror(status) << std::endl;
+        return "";
+    }
+
+    struct sockaddr_in* addr = (struct sockaddr_in*)res->ai_addr;
+    char ip_address[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(addr->sin_addr), ip_address, INET_ADDRSTRLEN);
+
+    std::cout << "IP Address of " << hostname << " is: " << ip_address << std::endl;
+
+    freeaddrinfo(res);
+    return ip_address;
+}
 int RunClient(uint16_t port,std::string ip){
+    ip = convert2IP(ip);
     int sock = 0, valread;
     struct sockaddr_in serv_addr;
     const char *hello = "Hello from client";
