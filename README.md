@@ -31,3 +31,10 @@
     export PATH="$PATH:$HOME/bin" # 根据提示修改为对应的安装位置
     bazel --version # 查看版本
     ```
+
+## proxy
+
+```shell
+export https_proxy="http://127.0.0.1:1080"
+export http_proxy="http://127.0.0.1:1080"
+```
