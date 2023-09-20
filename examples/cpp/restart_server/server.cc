@@ -69,7 +69,7 @@ class GRPCDemoServiceImpl final : public GRPCDemo::Service {
 };
 void doShutdown(std::unique_ptr<Server>& server)
 {   
-    sleep(60);//seconds
+    sleep(20);//seconds
     server->Shutdown();        
     std::cout << "Server is shutting down. "<< std::endl;
 }
