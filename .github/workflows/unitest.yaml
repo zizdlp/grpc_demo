@@ -1,9 +1,15 @@
 name: ci
 
+<<<<<<< HEAD
 on:
   push:
     branches:
       - 'main'
+=======
+on: 
+  push
+
+>>>>>>> refs/remotes/origin/main
 jobs:
   test:
     name: Test
@@ -19,5 +25,9 @@ jobs:
         which bazel
     - name: Run bazel build
       run:
+<<<<<<< HEAD
         bazel build //examples/cpp/helloworld:all
         bazel build //examples/cpp/streaming:all
+=======
+        bazel build //examples/cpp/helloworld:all
+>>>>>>> refs/remotes/origin/main
