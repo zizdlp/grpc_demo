@@ -15,7 +15,9 @@ int RunServer(uint16_t port) {
   int server_fd, new_socket;
   struct sockaddr_in address;
   int addrlen = sizeof(address);
-  char buffer[1024] = {0};
+  char buffer[102400] = {0};
+  int length=25000;
+  std::string send_data(length, 'a');
   const char *hello = "Hello from server";
 
   // 创建 Socket
@@ -45,13 +47,16 @@ int RunServer(uint16_t port) {
       return 1;
   }
 
+  while(true){
   // 从客户端接收消息
   read(new_socket, buffer, 1024);
-  std::cout << "Client: " << buffer << std::endl;
+  // std::cout << "Client: " << buffer << std::endl;
 
   // 发送消息给客户端
   send(new_socket, hello, strlen(hello), 0);
-  std::cout << "Hello message sent" << std::endl;
+  // std::cout << "Hello message sent" << std::endl;
+  }
+
   return 0;
 }
 int main(int argc, char** argv) {

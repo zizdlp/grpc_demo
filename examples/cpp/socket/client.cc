@@ -44,8 +44,10 @@ int RunClient(uint16_t port,std::string ip){
     ip = convert2IP(ip);
     int sock = 0, valread;
     struct sockaddr_in serv_addr;
-    const char *hello = "Hello from client";
-    char buffer[1024] = {0};
+    int length=25000;
+    std::string send_data(length, 'a');
+    const char *hello = send_data.c_str();
+    char buffer[102400] = {0};
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         std::cerr << "Socket creation error" << std::endl;
@@ -65,14 +67,20 @@ int RunClient(uint16_t port,std::string ip){
         std::cerr << "Connection Failed" << std::endl;
         return -1;
     }
+    auto s= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    .count();
+    for(int i=0;i<1000;++i){
+        // 发送消息给服务器
+        send(sock, hello, strlen(hello), 0);
+        // std::cout << "Hello message sent" << std::endl;
 
-    // 发送消息给服务器
-    send(sock, hello, strlen(hello), 0);
-    std::cout << "Hello message sent" << std::endl;
-
-    // 从服务器接收消息
-    valread = read(sock, buffer, 1024);
-    std::cout << "Server: " << buffer << std::endl;
+        // 从服务器接收消息
+        valread = read(sock, buffer, 1024);
+        // std::cout << "Server: " << buffer << std::endl;
+    }
+    auto e= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    .count();
+    std::cout<<"loop 1000 socket time consume:"<<e-s<<"us"<<std::endl;
 
     return 0;
 }

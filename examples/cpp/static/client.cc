@@ -19,6 +19,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <chrono>
 
 #include "absl/flags/flag.h"
 #include "absl/flags/parse.h"
@@ -86,9 +87,21 @@ int main(int argc, char** argv) {
   // InsecureChannelCredentials()).
   GreeterClient greeter(
       grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
-  std::string user("world");
-  std::string reply = greeter.SayHello(user);
-  std::cout << "Greeter received: " << reply << std::endl;
+  
+  int length=25000;
+  std::string send_data(length, 'a');
+  auto s= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+  .count();
+  
+  for(int i=0;i<1000;++i){
+
+    std::string user(send_data);
+    std::string reply = greeter.SayHello(user);
+  }
+  auto e= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+  .count();
+  std::cout<<"loop 1000 grpc time consume:"<<e-s<<"us"<<std::endl;
+  //std::cout << "Greeter received: " << reply << std::endl;
 
   return 0;
 }
