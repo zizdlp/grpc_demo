@@ -59,3 +59,65 @@ cc_binary(
     linkshared = False,
     linkstatic = True,
 )
+cc_binary(
+    name = "async_server",
+    srcs = ["async_server.cc"],
+    defines = ["BAZEL_BUILD"],
+    deps = [
+        "@com_github_grpc_grpc//:grpc++",
+        "@com_github_grpc_grpc//:grpc++_reflection",
+        "//examples/protos:helloworld_cc_grpc",
+        "@com_google_absl//absl/flags:flag",
+        "@com_google_absl//absl/flags:parse",
+        "@com_google_absl//absl/strings:str_format",
+    ],
+    linkshared = False,
+    linkstatic = True,
+)
+
+cc_binary(
+    name = "async_client",
+    srcs = ["async_client.cc"],
+    defines = ["BAZEL_BUILD"],
+    deps = [
+        "@com_github_grpc_grpc//:grpc++",
+        "//examples/protos:helloworld_cc_grpc",
+        "@com_google_absl//absl/flags:flag",
+        "@com_google_absl//absl/flags:parse",
+    ],
+    linkshared = False,
+    linkstatic = True,
+
+)
+
+
+cc_binary(
+    name = "grpc_async_client",
+    srcs = ["greeter_async_client.cc"],
+    defines = ["BAZEL_BUILD"],
+    deps = [
+        "@com_github_grpc_grpc//:grpc++",
+        "//examples/protos:helloworld_cc_grpc",
+        "@com_google_absl//absl/flags:flag",
+        "@com_google_absl//absl/flags:parse",
+    ],
+    linkshared = False,
+    linkstatic = True,
+
+)
+
+cc_binary(
+    name = "grpc_async_server",
+    srcs = ["greeter_async_server.cc"],
+    defines = ["BAZEL_BUILD"],
+    deps = [
+        "@com_github_grpc_grpc//:grpc++",
+        "@com_github_grpc_grpc//:grpc++_reflection",
+        "//examples/protos:helloworld_cc_grpc",
+        "@com_google_absl//absl/flags:flag",
+        "@com_google_absl//absl/flags:parse",
+        "@com_google_absl//absl/strings:str_format",
+    ],
+    linkshared = False,
+    linkstatic = True,
+)

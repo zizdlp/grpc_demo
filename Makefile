@@ -3,6 +3,10 @@ static:
 	bazel build //examples/cpp/static:client
 grpc:
 	bazel build //profile/grpc:server
+	bazel build //profile/grpc:grpc_async_client
+	bazel build //profile/grpc:grpc_async_server
+	bazel build //profile/grpc:async_server
+	bazel build //profile/grpc:async_client
 	bazel build //profile/grpc:client
 	bazel build //profile/grpc:client_multi
 socket:
