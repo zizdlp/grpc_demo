@@ -74,7 +74,7 @@ int RunClient(uint16_t port,uint32_t loop,std::string ip){
         // std::cout << "Hello message sent" << std::endl;
 
         // 从服务器接收消息
-        valread = read(sock, buffer, 25000);
+        valread = read(sock, buffer, 1024);
         // std::cout << "Server: " << buffer << std::endl;
     }
     auto e= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())

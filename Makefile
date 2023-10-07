@@ -9,6 +9,8 @@ grpc:
 	bazel build //profile/grpc:async_client
 	bazel build //profile/grpc:client
 	bazel build //profile/grpc:client_multi
+http:
+	bazel build //profile/httplib:client
 socket:
 	bazel build //profile/socket:server
 	bazel build //profile/socket:client

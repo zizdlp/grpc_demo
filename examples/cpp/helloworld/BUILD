@@ -24,7 +24,7 @@ cc_binary(
         "@com_google_absl//absl/flags:flag",
         "@com_google_absl//absl/flags:parse",
     ],
-    copts = ["-std=c++14"],
+    copts = ["-std=c++17"],
 )
 
 

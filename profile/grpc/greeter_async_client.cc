@@ -53,27 +53,35 @@ class GreeterClient {
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
   std::string SayHello(const std::string& user) {
+    auto s1= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    .count();
     // Data we are sending to the server.
     HelloRequest request;
     request.set_name(user);
-
+    auto s2= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    .count();
     // Container for the data we expect from the server.
     HelloReply reply;
-
+    auto s3= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    .count();
     // Context for the client. It could be used to convey extra information to
     // the server and/or tweak certain RPC behaviors.
     ClientContext context;
-
+    auto s4= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    .count();
     // The producer-consumer queue we use to communicate asynchronously with the
     // gRPC runtime.
     CompletionQueue cq;
 
     // Storage for the status of the RPC upon completion.
     Status status;
-
+    auto s5= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    .count();
     std::unique_ptr<ClientAsyncResponseReader<HelloReply> > rpc(
         stub_->AsyncSayHello(&context, request, &cq));
-
+    auto s6= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    .count();
+    // std::cout<<"in call:time: s6-s5:"<<s6-s5<<";s5-s1:"<<s5-s1<<std::endl;
     // Request that, upon completion of the RPC, "reply" be updated with the
     // server's response; "status" with the indication of whether the operation
     // was successful. Tag the request with the integer 1.
@@ -120,7 +128,7 @@ int main(int argc, char** argv) {
       "localhost:50051", grpc::InsecureChannelCredentials()));
   int length=25000;
   std::string send_data(length, 'a');
-  std::string user("world");
+  std::string user(send_data);
   auto loop = absl::GetFlag(FLAGS_loop);
   auto s= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
   .count();
@@ -129,7 +137,7 @@ int main(int argc, char** argv) {
   }
   auto e= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
   .count();
-  std::cout<<"loop:"<<loop <<" grpc time consume:"<<e-s<<"us"<<std::endl;
+  std::cout<<"loop:"<<loop <<" grpc time consume:"<<e-s<<"us"<<";s is:"<<s<<";e is:"<<e<<std::endl;
 
   // std::cout << "Greeter received: " << reply << std::endl;
 

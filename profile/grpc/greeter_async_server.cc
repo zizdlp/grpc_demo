@@ -102,7 +102,7 @@ class ServerImpl final {
 
         // The actual processing.
         std::string prefix("Hello ");
-        reply_.set_message(prefix + request_.name());
+        reply_.set_message("Hello from server");
 
         // And we are done! Let the gRPC runtime know we've finished, using the
         // memory address of this instance as the uniquely identifying tag for

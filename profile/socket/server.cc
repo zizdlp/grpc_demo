@@ -49,7 +49,7 @@ int RunServer(uint16_t port) {
 
   while(true){
   // 从客户端接收消息
-  read(new_socket, buffer, 1024);
+  read(new_socket, buffer, 25000);
   // std::cout << "Client: " << buffer << std::endl;
 
   // 发送消息给客户端

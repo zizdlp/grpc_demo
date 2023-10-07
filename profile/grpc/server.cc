@@ -48,9 +48,18 @@ ABSL_FLAG(uint16_t, port, 50051, "Server port for the service");
 class GreeterServiceImpl final : public Greeter::Service {
   Status SayHello(ServerContext* context, const HelloRequest* request,
                   HelloReply* reply) override {
-    // std::cout<<"server recv request:"<<request->name()<<std::endl;
-    std::string prefix("Hello ");
-    reply->set_message(prefix);
+    // auto s= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    // .count();
+
+    // std::string prefix("Hello from server");
+    reply->set_message("Hello from server");
+    
+    // auto e= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    // .count();
+    // std::cout<<"in call time consume:"<<e-s<<std::endl;
+    // std::cout<<"in call s:"<<s<<std::endl;
+    // std::cout<<"in call e:"<<e<<std::endl;
+
     return Status::OK;
   }
 };

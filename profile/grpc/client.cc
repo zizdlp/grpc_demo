@@ -62,8 +62,14 @@ class GreeterClient {
     ClientContext context;
 
     // The actual RPC.
+    // auto s= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    // .count();
     Status status = stub_->SayHello(&context, request, &reply);
-
+    // auto e= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
+    // .count();
+    // std::cout<<"in call time consume:"<<e-s<<std::endl;
+    // std::cout<<"in call s:"<<s<<std::endl;
+    // std::cout<<"in call e:"<<e<<std::endl;
     // Act upon its status.
     if (status.ok()) {
       return reply.message();
@@ -96,7 +102,6 @@ int main(int argc, char** argv) {
   auto loop = absl::GetFlag(FLAGS_loop);
   std::string user(send_data);
   for(int i=0;i<loop;++i){
-
     std::string reply = greeter.SayHello(user);
   }
   auto e= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch())
